@@ -1,6 +1,7 @@
 package com.daitou.o2o.web.superadmin;
 
 import com.daitou.o2o.Exception.ShopOperationException;
+import com.daitou.o2o.dto.ImageHolder;
 import com.daitou.o2o.dto.ShopExecution;
 import com.daitou.o2o.entity.Area;
 import com.daitou.o2o.entity.PersonInfo;
@@ -123,11 +124,13 @@ public class ShopManagementController {
         // 2.修改店铺信息
         if (shop != null && shop.getShopId() != null) {
             ShopExecution se;
+
             try {
+                ImageHolder thumbnail = new ImageHolder(shopImg.getName(),shopImg.getInputStream());
                 if(shopImg == null){
-                    se = shopService.modifyShop(shop, null, null);
+                    se = shopService.modifyShop(shop, null);
                 }else{
-                    se = shopService.modifyShop(shop, shopImg.getInputStream(), shopImg.getOriginalFilename());
+                    se = shopService.modifyShop(shop, thumbnail);
                 }
                 if(se.getState() == ShopStateEnum.SUCCESS.getState()){
                     modelMap.put("success",true);
@@ -182,6 +185,7 @@ public class ShopManagementController {
     private Map<String,Object> getShopInitInfo(){
         Map<String, Object> modelMap = new HashMap<String, Object>();
         List<ShopCategory> shopCategoryList = new ArrayList<ShopCategory>();
+
         List<Area> areaList = new ArrayList<Area>();
         try {
             shopCategoryList = shopCategoryService.getShopCategoryList(new ShopCategory());
@@ -243,7 +247,8 @@ public class ShopManagementController {
             ShopExecution se =null;
 
             try {
-                se = shopService.addShop(shop,shopImg.getInputStream(),shopImg.getOriginalFilename());
+                ImageHolder thumbnail = new ImageHolder(shopImg.getName(),shopImg.getInputStream());
+                se = shopService.addShop(shop,thumbnail);
                 if (se.getState() == ShopStateEnum.CHECK.getState()){
                     modelMap.put("success",true);
                 }else {

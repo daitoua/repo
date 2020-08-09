@@ -2,6 +2,7 @@ package com.daitou.o2o.dao;
 
 
 import com.daitou.o2o.Exception.ShopOperationException;
+import com.daitou.o2o.dto.ImageHolder;
 import com.daitou.o2o.dto.ShopExecution;
 import com.daitou.o2o.entity.*;
 import com.daitou.o2o.enums.ShopStateEnum;
@@ -35,6 +36,11 @@ public class areaDaoTest {
 
     @Autowired
     private ProductCategoryDao productCategoryDao;
+    @Autowired
+    private ProductDao productDao;
+
+    @Autowired
+    private HeadLineDao headLineDao;
 
 
     @Autowired
@@ -117,7 +123,9 @@ public class areaDaoTest {
         shop.setAdvice("审核中");
         File shopImg = new File("/Users/daitou/work/image/daitoutou.png");
         InputStream is = new FileInputStream(shopImg);
-        ShopExecution se = shopService.addShop(shop, is, shopImg.getName());
+        ImageHolder thumbnail = new ImageHolder(shopImg.getName(),is);
+
+        ShopExecution se = shopService.addShop(shop, thumbnail);
         assertEquals(ShopStateEnum.CHECK.getState(), se.getState());
     }
 
@@ -164,7 +172,28 @@ public class areaDaoTest {
 
     }
 
+    @Test
+    public void testBQueryProductList() throws Exception {
+        Product productCondition = new Product();
+        // 分页查询，预期返回三条结果
+        List<Product> productList = productDao.queryProductList(productCondition, 0, 3);
+        assertEquals(2, productList.size());
+        // 查询名称为测试的商品总数
+        int count = productDao.queryProductCount(productCondition);
+        assertEquals(2, count);
+        // 使用商品名称模糊查询，预期返回两条结果
+        productCondition.setProductName("%我%");
+        productList = productDao.queryProductList(productCondition, 0, 3);
+        assertEquals(1, productList.size());
+        count = productDao.queryProductCount(productCondition);
+        assertEquals(1, count);
+    }
 
+    @Test
+    public void testBQueryHeadLine() throws Exception {
+        List<HeadLine> headLines = headLineDao.queryHeadLineList(new HeadLine());
+        assertEquals(1,headLines.size());
+    }
 
 
 }

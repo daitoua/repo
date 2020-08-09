@@ -1,5 +1,7 @@
 package com.daitou.o2o.utils;
 
+import com.daitou.o2o.dto.ImageHolder;
+import com.daitou.o2o.entity.Product;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 public class ImageUtil {
@@ -44,15 +47,15 @@ public class ImageUtil {
     /**
      * 处理缩略图，并返回新生成图片的相对值路径
      *
-     * @param thumbnailInputStream
+     * @param
      * @param targetAddr
      * @return
      */
-    public static String generateThumbnail(InputStream thumbnailInputStream, String fileName, String targetAddr) {
+    public static String generateThumbnail(ImageHolder thumbnail, String targetAddr) {
         // 获取不重复的随机名
         String realFileName = getRandomFileName();
         // 获取文件的扩展名如png,jpg等
-        String extension = getFileExtension(fileName);
+        String extension = getFileExtension(thumbnail.getImgName());
         // 如果目标路径不存在，则自动创建
         makeDirPath(targetAddr);
         // 获取文件存储的相对路径(带文件名)
@@ -64,7 +67,7 @@ public class ImageUtil {
         logger.debug("basePath is :" + basePath);
         // 调用Thumbnails生成带有水印的图片
         try {
-            Thumbnails.of(thumbnailInputStream).size(200, 200)
+            Thumbnails.of(thumbnail.getImage()).size(200, 200)
                     .watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f)
                     .outputQuality(0.8f).toFile(dest);
         } catch (IOException e) {
@@ -76,8 +79,30 @@ public class ImageUtil {
     }
 
 
+    public static String generateNormalImg(ImageHolder imageHolder,String targetAddr ){
+        String realFileName = getRandomFileName();
+        String extension = getFileExtension(imageHolder.getImgName());
+        makeDirPath(targetAddr);
+
+        String relativeAddr = targetAddr + realFileName + extension;
+        logger.debug("current relativeAddr is :" + relativeAddr);
+        File dest = new File(PathUtil.getImgBasePath() + relativeAddr);
+        try {
+            Thumbnails.of(imageHolder.getImage()).size(337, 640)
+                    .watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f)
+                    .outputQuality(0.9f).toFile(dest);
+        } catch (IOException e) {
+            logger.error(e.toString());
+            throw new RuntimeException("创建缩图片失败：" + e.toString());
+        }
+
+        return relativeAddr;
+
+    }
+
+
     /**
-     * 创建目标路径所涉及到的目录，即/home/work/daitou/xxx.jpg, 那么 home work xiangze
+     * 创建目标路径所涉及到的目录，即/home/work/daitou/xxx.jpg, 那么 home work daitou
      * 这三个文件夹都得自动创建
      *
      * @param targetAddr

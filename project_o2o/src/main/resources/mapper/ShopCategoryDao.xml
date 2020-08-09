@@ -18,6 +18,12 @@
         FROM
         tb_shop_category
         <where>
+            <if test="shopCategoryCondition == null">
+                and parent_id is null
+            </if>
+            <if test="shopCategoryCondition != null">
+                and parent_id is not null
+            </if>
             <if test="shopCategoryCondition != null and shopCategoryCondition.parent != null and shopCategoryCondition.parent.shopCategoryId != null">
                 and parent_id = #{shopCategoryCondition.parent.shopCategoryId}
             </if>
@@ -25,4 +31,8 @@
         ORDER BY
         priority DESC
     </select>
+
+
+
+
 </mapper>

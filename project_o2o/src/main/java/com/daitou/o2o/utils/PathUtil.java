@@ -4,6 +4,7 @@ public class PathUtil {
 
     private static String seperator = System.getProperty("file.separator");
     public static String getImgBasePath() {
+        //获得操作系统的名字
         String os = System.getProperty("os.name");
         String basePath = "";
         if(os.toLowerCase().startsWith("win")){

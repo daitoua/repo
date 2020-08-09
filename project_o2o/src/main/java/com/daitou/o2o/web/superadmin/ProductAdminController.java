@@ -7,11 +7,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "/productadmin")
 public class ProductAdminController {
 
-    @RequestMapping(value = "/productcategory")
-    public String productCategory(){
+    @RequestMapping(value = "/productcategorymanagement")
+    public String productCategoryManagement(){
 
         return "product/productcategorymanagement";
     }
+
+
+    @RequestMapping(value = "/productoperation")
+    public String productoperation(){
+
+        return "product/productoperation";
+    }
+
+    @RequestMapping(value = "/productmanagement")
+    public String productmanagement(){
+
+        return "product/productmanagement";
+    }
+
+
+
+
 
 
 
