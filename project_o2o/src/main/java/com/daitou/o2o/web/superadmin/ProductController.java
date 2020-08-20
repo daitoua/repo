@@ -178,11 +178,14 @@ public class ProductController {
     private ImageHolder handleImage(HttpServletRequest request, ImageHolder thumbnail, List<ImageHolder> productImgList)
             throws IOException {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+
         // 取出缩略图并构建ImageHolder对象
         CommonsMultipartFile thumbnailFile = (CommonsMultipartFile) multipartRequest.getFile("thumbnail");
         if (thumbnailFile != null) {
             thumbnail = new ImageHolder(thumbnailFile.getOriginalFilename(), thumbnailFile.getInputStream());
         }
+
+
         // 取出详情图列表并构建List<ImageHolder>列表对象，最多支持六张图片上传
         for (int i = 0; i < IMAGEMAXCOUNT; i++) {
             CommonsMultipartFile productImgFile = (CommonsMultipartFile) multipartRequest.getFile("productImg" + i);

@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ProductCategoryService {
 
+    public static final String PRODUCTCATEGORYLISTKEY = "productcategorylist";
+
     List<ProductCategory> getProductCategory(Long shopId);
 
     ProductCategoryExecution addProductCategory(List<ProductCategory> productCategoryList)throws ProductCategoryOperationException;

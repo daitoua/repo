@@ -61,19 +61,20 @@ public class ProductServiceImpl implements ProductService {
             if (thumbnail != null){
                 addThumbnail(thumbnail,product);
             }
-            if (imageHolderList != null && imageHolderList.size() > 0) {
-                addProductImgList(imageHolderList, product);
-            }
             try {
-                int effectNum = productDao.insertProduct(product);
-                if (effectNum <= 0){
-                    throw new ProductOperationException("店铺添加出错");
+                // 创建商品信息
+                int effectedNum = productDao.insertProduct(product);
+                if (effectedNum <= 0) {
+                    throw new ProductOperationException("创建商品失败");
                 }
-            }catch (Exception e){
-                throw new ProductOperationException("店铺添加出错" + e.toString());
+            } catch (Exception e) {
+                throw new ProductOperationException("创建商品失败:" + e.toString());
             }
-            return new ProductExecution( product,ProductStateEnum.SUCCESS);
-
+            // 若商品详情图不为空则添加
+            if (imageHolderList != null && imageHolderList.size() > 0) {
+                addProductImgList(imageHolderList,product);
+            }
+            return new ProductExecution(product,ProductStateEnum.SUCCESS);
         } else {
             // 传参为空则返回空值错误信息
             return new ProductExecution(ProductStateEnum.EMPTY);

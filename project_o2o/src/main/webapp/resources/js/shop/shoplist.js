@@ -30,6 +30,10 @@ $(function() {
         $('.shop-wrap').html(html);
     }
 
+    $('#bindOrChange').on('click',function (e) {
+        $.toast("不可以呦");
+    });
+
     function shopStatus(status) {
         if (status == 0) {
             return '审核中';

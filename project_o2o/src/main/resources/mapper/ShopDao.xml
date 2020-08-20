@@ -78,9 +78,10 @@
         s.priority DESC
         LIMIT #{rowIndex},#{pageSize};
     </select>
+
     <select id="queryShopCount" resultType="int">
         SELECT
-        count(1)
+        count(*)
         FROM
         tb_shop s,
         tb_area a,
@@ -123,10 +124,6 @@
             s.shop_category_id = sc.shop_category_id
         </where>
     </select>
-
-
-
-
 
 
 

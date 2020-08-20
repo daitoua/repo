@@ -72,15 +72,15 @@ public class ShopManagementController {
     @ResponseBody
     private Map<String, Object> getShopList(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<String, Object>();
-        PersonInfo user = new PersonInfo();
+        /*PersonInfo user = new PersonInfo();
         user.setUserId(1L);
         user.setName("test");
-        request.getSession().setAttribute("user", user);
-        user = (PersonInfo) request.getSession().getAttribute("user");
+        request.getSession().setAttribute("user", user);*/
+        PersonInfo user = (PersonInfo) request.getSession().getAttribute("user");
         try {
             Shop shopCondition = new Shop();
             shopCondition.setOwner(user);
-            ShopExecution se = shopService.getShopList(shopCondition, 0, 100);
+            ShopExecution se = shopService.getShopList(shopCondition, 0, 10);
             modelMap.put("shopList", se.getShopList());
             modelMap.put("user", user);
             modelMap.put("success", true);
@@ -96,7 +96,7 @@ public class ShopManagementController {
 
     @RequestMapping(value = "/modifyshop",method = RequestMethod.POST)
     @ResponseBody
-    private Map<String, Object> modifyshop(HttpServletRequest request) {
+    private Map<String, Object> modifyShop(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<String, Object>();
         if (!CodeUtil.checkVerifyCode(request)) {
             modelMap.put("success", false);
@@ -247,7 +247,7 @@ public class ShopManagementController {
             ShopExecution se =null;
 
             try {
-                ImageHolder thumbnail = new ImageHolder(shopImg.getName(),shopImg.getInputStream());
+                ImageHolder thumbnail = new ImageHolder(shopImg.getOriginalFilename(),shopImg.getInputStream());
                 se = shopService.addShop(shop,thumbnail);
                 if (se.getState() == ShopStateEnum.CHECK.getState()){
                     modelMap.put("success",true);

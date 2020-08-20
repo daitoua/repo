@@ -34,7 +34,7 @@ $(function() {
                     + '</p>' + '<p class="shop-desc">'
                     + item.shopCategoryDesc + '</p>' + '</div>'
                     + '<div class="shop-classify-img-warp">'
-                    + '<img class="shop-img" src="' + item.shopCategoryImg
+                    + '<img class="shop-img" src="'+ item.shopCategoryImg
                     + '">' + '</div>' + '</div>';
             });
             //将拼接好的类别赋值给前端HTML控件进行展示

@@ -26,6 +26,9 @@ public class ShopServiceImpl implements ShopService {
     private ShopDao shopDao;
 
 
+
+
+
     @Override
     public ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize) {
         //将页码转换成行码
@@ -34,9 +37,9 @@ public class ShopServiceImpl implements ShopService {
         List<Shop> shopList = shopDao.queryShopList(shopCondition, rowIndex, pageSize);
         //依据相同的查询条件，返回店铺总数
         int count = shopDao.queryShopCount(shopCondition);
-        ShopExecution se = new ShopExecution();
+        ShopExecution se = null;
         if (shopList != null) {
-            se.setShopList(shopList);
+            se = new ShopExecution(ShopStateEnum.SUCCESS,shopList);
             se.setCount(count);
         } else {
             se.setState(ShopStateEnum.INNER_ERROR.getState());

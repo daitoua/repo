@@ -14,4 +14,20 @@ public class FrontendController {
         return "frontend/index";
     }
 
+
+    @RequestMapping("/shoplist")
+    private String shopList(){
+        return "frontend/shoplist";
+    }
+
+    @RequestMapping("/productdetail")
+    private String productDetail(){
+        return "frontend/productdetail";
+    }
+
+    @RequestMapping("/shopdetail")
+    private String shopDetail(){
+        return "frontend/shopdetail";
+    }
+
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface HeadLineService {
 
-
+    public static String HEADLINELISTKEY = "headlinelist";
 
     List<HeadLine> queryHeadLineList(HeadLine headLineCondition)throws IOException;
 }

@@ -2,6 +2,7 @@ package com.daitou.o2o.dao;
 
 
 import com.daitou.o2o.Exception.ShopOperationException;
+import com.daitou.o2o.cache.JedisPoolWriper;
 import com.daitou.o2o.dto.ImageHolder;
 import com.daitou.o2o.dto.ShopExecution;
 import com.daitou.o2o.entity.*;
@@ -9,11 +10,14 @@ import com.daitou.o2o.enums.ShopStateEnum;
 import com.daitou.o2o.service.AreaService;
 import com.daitou.o2o.service.ShopService;
 import com.daitou.o2o.utils.CodeUtil;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +29,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring/spring-dao.xml", "classpath:spring/spring-service.xml"})
+@ContextConfiguration({"classpath:spring/spring-dao.xml", "classpath:spring/spring-service.xml","classpath:spring/spring-redis.xml"})
 public class areaDaoTest {
 
     @Autowired
@@ -194,6 +198,32 @@ public class areaDaoTest {
         List<HeadLine> headLines = headLineDao.queryHeadLineList(new HeadLine());
         assertEquals(1,headLines.size());
     }
+
+
+    @Test
+    public void testQueryShopListAndCount() {
+        Shop shopCondition = new Shop();
+        ShopCategory childCategory = new ShopCategory();
+        ShopCategory parentCategory = new ShopCategory();
+        parentCategory.setShopCategoryId(2L);
+        childCategory.setParent(parentCategory);
+        shopCondition.setShopCategory(childCategory);
+        List<Shop> shopList = shopDao.queryShopList(shopCondition, 1, 5);
+        int count = shopDao.queryShopCount(shopCondition);
+
+        System.out.println("店铺列表的大小：" + shopList.size());
+        System.out.println("店铺总数：" + count);
+
+        ShopCategory sc = new ShopCategory();
+        sc.setShopCategoryId(3L);
+        shopCondition.setShopCategory(sc);
+        shopList = shopDao.queryShopList(shopCondition,0,2);
+        count = shopDao.queryShopCount(shopCondition);
+        System.out.println("xin店铺列表的大小：" + shopList.size());
+        System.out.println("xin店铺总数：" + count);
+    }
+
+
 
 
 }

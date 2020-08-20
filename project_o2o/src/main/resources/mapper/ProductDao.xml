@@ -179,7 +179,8 @@
         priority,
         enable_status,
         product_category_id,
-        shop_id
+        shop_id,
+        last_edit_time
         FROM
         tb_product
         <where>

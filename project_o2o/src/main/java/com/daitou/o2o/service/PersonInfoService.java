@@ -1,0 +1,21 @@
+package com.daitou.o2o.service;
+
+import com.daitou.o2o.dto.PersonInfoExecution;
+import com.daitou.o2o.entity.PersonInfo;
+
+public interface PersonInfoService {
+
+
+    /**
+     * 根据用户Id获取personInfo信息
+     *
+     * @param
+     * @return
+     */
+    PersonInfo getPersonInfoByName(String name);
+
+
+    PersonInfoExecution addPersonInfo(PersonInfo personInfo);
+
+
+}

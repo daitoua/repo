@@ -8,7 +8,8 @@ import java.util.Date;
  */
 public class Shop implements Serializable {
 
-        // 主键ID
+
+    // 主键ID
         private Long shopId;
         // 店铺名称
         private String shopName;
